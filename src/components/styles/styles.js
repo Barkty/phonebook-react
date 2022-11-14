@@ -373,6 +373,7 @@ export const ContactCard = styled.div`
             order: 0;
             flex-grow: 0;
             margin-bottom: 20px;
+            white-space: nowrap;
         }
 
         .phone_address {

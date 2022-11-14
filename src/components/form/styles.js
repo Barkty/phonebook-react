@@ -24,6 +24,24 @@ export const FormContainer = styled.div`
 
     }
 
+    .add_banner {
+        height: 123px;
+        width: 100%;
+        background: #D9D9D9;
+        opacity: 0.2;
+        border-radius: 40px 40px 0px 0px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 40px 50px;
+
+        .empty_box {
+            width: 7%;
+            height: 100%;
+        }
+
+    }
+
     .form_container {
         width: 100%;
         height: auto;
@@ -37,11 +55,7 @@ export const FormContainer = styled.div`
 `
 
 export const FormControl = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     padding: 0px;
-    gap: 9px;
     width: 272px;
     height: 79px;
     margin-bottom: 40px;
@@ -57,6 +71,8 @@ export const FormControl = styled.div`
         flex: none;
         order: 0;
         flex-grow: 0;
+        float: left;
+        margin-bottom: 0.8rem;
     }
 
     .input {
@@ -103,6 +119,21 @@ export const FormControl = styled.div`
     }
 `
 
+export const Option = styled.option`
+    width: 100%;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding: 20px 13px;
+    height: 39px;
+    display: flex;
+    cursor: pointer;
+
+    &:hover {
+        background: #D9D9D9;
+        border-radius: 5px;
+    }
+
+`
 export const ButtonFilled = styled.button`
     display: flex;
     flex-direction: row;
@@ -112,7 +143,7 @@ export const ButtonFilled = styled.button`
     gap: 10px;
     margin-left: 12rem;
     cursor: pointer;
-    
+
     width: 196px;
     height: 44px;
     background: #D9D9D9;
@@ -128,4 +159,14 @@ export const ButtonFilled = styled.button`
     flex: none;
     order: 1;
     flex-grow: 0;
+`
+
+export const ErrorMessage = styled.span`
+    color: red;
+    width: 100%;
+    position: relative;
+    font-size: 16px;
+    top: 0rem;
+    left: -55px;
+    text-align: left;
 `

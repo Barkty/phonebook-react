@@ -6,13 +6,16 @@ import { IoTrashBinSharp } from 'react-icons/io5'
 import { HiTrash } from 'react-icons/hi'
 import Text from 'components/typograhy/Text'
 import { motion } from 'framer-motion'
-import { deleteContactById, getContact, getContacts, getContactsBySearch, updateContactById } from 'services/contacts.service'
+import { createContact, deleteContactById, getContact, getContacts, getContactsBySearch, updateContactById } from 'services/contacts.service'
 import useContextGetter from 'hooks/useContextGetter'
 import dictionary from 'assets/phonebook.svg'
 import male from 'assets/malebanner.svg'
 import { useSnackbar } from "notistack";
 import CustomModal from 'components/modal/CustomModal'
 import EditContact from 'components/form/EditContact'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import AddContact from 'components/form/AddContact'
 
 const Home = () => {
     const { getAllContacts, getSingleContact } = useContextGetter()
@@ -22,6 +25,7 @@ const Home = () => {
     const [contactViewed, setContactViewed] = useState(false)
     const [allChecked, setAllChecked] = useState(false)
     const [openModal, setOpenModal] = useState(false)
+    const [addContact, setAddContact] = useState(false)
 
     const handleSuccess = (message) => {
         enqueueSnackbar(message, {
@@ -100,10 +104,10 @@ const Home = () => {
         }
     }
 
-    const editContact = async (id, values) => {
+    const editContact = async (values) => {
 
         try {
-            const res = await updateContactById(id, values)
+            const res = await updateContactById(contact._id, values)
 
             if(res.success) {
                 handleSuccess(res.message)
@@ -114,6 +118,53 @@ const Home = () => {
             handleFail(e?.message) 
         }
     }
+
+    const createNewContact = async (values) => {
+
+        try {
+            const res = await createContact(values)
+
+            if(res.success) {
+                handleSuccess(res.message)
+                await fetchContacts()
+                setAddContact(false)
+            }
+
+        } catch (e) {
+            handleFail(e?.message) 
+        }
+    }
+
+    const validationSchema = Yup.object().shape({
+        firstName: Yup.string().max(12, 'First name must be 20 characters or less').required('First name is required'),
+        lastName: Yup.string().max(20, 'Last name must be 20 characters or less').required('Last name is required'),
+        phone: Yup.string().min(11, 'Phone number must be 11 charcters or less').required('Phone number is required'),
+        gender: Yup.string().required('Gender is required')
+    })
+    const formik = useFormik({
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            gender: ''
+        },
+        onSubmit: editContact,
+        enableReinitialize: true,
+        validationSchema
+    })
+
+    const contactFormik = useFormik({
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            gender: ''
+        },
+        onSubmit: createNewContact,
+        enableReinitialize: true,
+        validationSchema
+    })
+
     let index = 0;
 
   return (
@@ -157,7 +208,7 @@ const Home = () => {
                         )}
                         
                     </div>
-                    <button className='add_new'>
+                    <button className='add_new' onClick={()=>setAddContact(true)}>
                         <AddCircleRounded sx={{ fontSize: '14px'}}/>
                         Add address
                     </button>
@@ -223,7 +274,10 @@ const Home = () => {
             </motion.div>
         </div>
         <CustomModal openModal={openModal} setOpenModal={setOpenModal}>
-            <EditContact/>
+            <EditContact formik={formik}/>
+        </CustomModal>
+        <CustomModal openModal={addContact} setOpenModal={setAddContact}>
+            <AddContact formik={contactFormik}/>
         </CustomModal>
     </Container>
   )

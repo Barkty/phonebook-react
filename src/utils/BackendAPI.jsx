@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'https://phone-book-server.onrender.com'
+const baseURL = 'http://localhost:8009'
 
 const API = axios.create({
     baseURL,

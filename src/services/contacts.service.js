@@ -56,3 +56,15 @@ export const updateContactById = async (id, data) => {
         throw e.response.data
     }
 }
+
+export const createContact = async (data) => {
+
+    try {
+        const res = await API.post(`/api/contact`, data)
+
+        return res.data
+        
+    } catch (e) {
+        throw e.response
+    }
+}
