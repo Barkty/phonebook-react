@@ -6,7 +6,7 @@ import { IoTrashBinSharp } from 'react-icons/io5'
 import { HiTrash } from 'react-icons/hi'
 import Text from 'components/typograhy/Text'
 import { motion } from 'framer-motion'
-import { createContact, deleteContactById, getContact, getContacts, getContactsBySearch, updateContactById } from 'services/contacts.service'
+import { createContact, deleteBulkContacts, deleteContactById, getContact, getContacts, getContactsBySearch, updateContactById } from 'services/contacts.service'
 import useContextGetter from 'hooks/useContextGetter'
 import dictionary from 'assets/phonebook.svg'
 import male from 'assets/malebanner.svg'
@@ -16,16 +16,51 @@ import EditContact from 'components/form/EditContact'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import AddContact from 'components/form/AddContact'
+import EditMultipleContact from 'components/form/EditMultipleContact'
 
 const Home = () => {
     const { getAllContacts, getSingleContact } = useContextGetter()
     const { enqueueSnackbar } = useSnackbar();
     const [contacts, setContacts] = useState([])
     const [contact, setContact] = useState([])
+    const [contactIds, setContactIds] = useState('')
     const [contactViewed, setContactViewed] = useState(false)
     const [allChecked, setAllChecked] = useState(false)
     const [openModal, setOpenModal] = useState(false)
     const [addContact, setAddContact] = useState(false)
+    const [editMulti, setEditMulti] = useState(false)
+    const [multiForm, setMultiForm] = useState([
+        {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            gender: ''
+        },
+        {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            gender: ''
+        },
+        {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            gender: ''
+        },
+        {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            gender: ''
+        },
+    ])
+    const [bulkEdit, setBulkEdit] = useState({})
+
+    const multiHandleChange = (e) => {
+        e.persist()
+        setMultiForm({[e.target.name]: e.target.value})
+    }
 
     const handleSuccess = (message) => {
         enqueueSnackbar(message, {
@@ -62,6 +97,16 @@ const Home = () => {
             await fetchContacts()
         })()
     }, [])
+
+    useEffect(() => {
+        let ids = []
+        for(let i = 0; i < contacts?.length; i++) {
+            ids?.push(contacts[i]?._id)
+        }
+        let idString = ids?.join('#');
+
+        setContactIds(idString)
+    }, [contacts])
 
     const searchContacts = async (search) => {
 
@@ -104,6 +149,21 @@ const Home = () => {
         }
     }
 
+    const deleteMultiple = async (ids) => {
+        let data = { ids: ids };
+
+        try {
+            const res = await deleteBulkContacts(data)
+            if(res.success) {
+                handleSuccess(res.message)
+                await fetchContacts()
+            }
+
+        } catch (e) {
+            handleFail(e?.message)
+        }
+    }
+
     const editContact = async (values) => {
 
         try {
@@ -133,6 +193,10 @@ const Home = () => {
         } catch (e) {
             handleFail(e?.message) 
         }
+    }
+
+    const editMultipleContact = async (values) => {
+        let formData = new FormData();
     }
 
     const validationSchema = Yup.object().shape({
@@ -202,8 +266,8 @@ const Home = () => {
                         <Checkbox sx={{color: '#757AFF', padding: '0', marginRight: '10px'}} onClick={()=>setAllChecked(!allChecked)}/>
                         {allChecked && (
                             <>
-                                <IoTrashBinSharp color='#757AFF' size={24} style={{marginRight: '10px', cursor: 'pointer' }}/>
-                                <Edit sx={{ fontSize: 24, color: '#757AFF', cursor: 'pointer'}}/>
+                                <IoTrashBinSharp color='#757AFF' size={24} style={{marginRight: '10px', cursor: 'pointer' }} onClick={()=>deleteMultiple(contactIds)}/>
+                                <Edit sx={{ fontSize: 24, color: '#757AFF', cursor: 'pointer'}} onClick={()=>setEditMulti(true)}/>
                             </>
                         )}
                         
@@ -278,6 +342,9 @@ const Home = () => {
         </CustomModal>
         <CustomModal openModal={addContact} setOpenModal={setAddContact}>
             <AddContact formik={contactFormik}/>
+        </CustomModal>
+        <CustomModal openModal={editMulti} setOpenModal={setEditMulti}>
+            <EditMultipleContact formik={multiForm} handleChange={multiHandleChange}/>
         </CustomModal>
     </Container>
   )

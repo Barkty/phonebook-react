@@ -63,6 +63,18 @@ export const createContact = async (data) => {
         const res = await API.post(`/api/contact`, data)
 
         return res.data
+
+    } catch (e) {
+        throw e.response
+    }
+}
+
+export const deleteBulkContacts = async (id) => {
+    console.log(id)
+    try {
+        const res = await API.post(`/api/contact/bulk/delete`, id)
+
+        return res.data
         
     } catch (e) {
         throw e.response

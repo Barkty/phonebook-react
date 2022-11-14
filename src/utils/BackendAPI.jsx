@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'https://phone-book-server.onrender.com/api'
+const baseURL = 'https://phone-book-server.onrender.com'
 
 const API = axios.create({
     baseURL,
