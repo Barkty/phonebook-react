@@ -13,7 +13,6 @@ export const ModalOverlay = styled.div`
 export const Modal = styled.div`
     width: auto;
     height: auto;
-    background: #fff;
     border-radius: 20px;
     position: absolute;
     top: 51%;
@@ -22,17 +21,25 @@ export const Modal = styled.div`
     z-index: 2;
     text-align: center;
 
-    .modal_inside {
+    /* .modal_inside {
         width: 50px;
         height: 50px;
         position: relative;
         float: right;
         top: -4px;
-        background: #ffffff;
         /* placeholder */
-        border-radius: 25px;
+        /*border-radius: 25px;
         z-index: 3;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    } */
+
+    .modal_inside {
+        z-index: 3;
+        position: absolute;
+        cursor: pointer;
+        position: relative;
+        top: 61px;
+        right: 40%;
     }
 
     .modal_btn {

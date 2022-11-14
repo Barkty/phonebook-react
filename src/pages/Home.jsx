@@ -11,6 +11,8 @@ import useContextGetter from 'hooks/useContextGetter'
 import dictionary from 'assets/phonebook.svg'
 import male from 'assets/malebanner.svg'
 import { useSnackbar } from "notistack";
+import CustomModal from 'components/modal/CustomModal'
+import EditContact from 'components/form/EditContact'
 
 const Home = () => {
     const { getAllContacts, getSingleContact } = useContextGetter()
@@ -220,6 +222,9 @@ const Home = () => {
 
             </motion.div>
         </div>
+        <CustomModal openModal={openModal} setOpenModal={setOpenModal}>
+            <EditContact/>
+        </CustomModal>
     </Container>
   )
 }

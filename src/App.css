@@ -39,3 +39,25 @@ body {
   /* Support for IE. */
   font-feature-settings: 'liga';
 }
+
+.css-1s2u09g-control {
+  height: 100% !important;
+  background-color: inherit !important;
+}
+
+.css-319lph-ValueContainer, .css-6j8wv5-Input {
+  padding: 0 !important;
+  height: 100% !important;
+}
+
+.css-14el2xx-placeholder {
+  font-family: 'Poppins', sans-serif !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  line-height: 21px !important;
+  letter-spacing: 0.03em !important;
+  color: #8F8F8F !important;
+  text-align: left !important;
+  margin-left: 19px !important;
+}
