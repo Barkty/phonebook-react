@@ -172,6 +172,29 @@ export const AddressCard = styled.div`
             text-align: center;
             letter-spacing: 0.01em;
             color: #111221;
+            white-space: nowrap;
+        }
+        .add_bulk {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 10px;
+            gap: 10px;
+            width: 178px;
+            height: 29px;
+            background: #757AFF;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 22px;
+            text-align: center;
+            letter-spacing: 0.01em;
+            color: #111221;
+            white-space: nowrap;
         }
     }
 

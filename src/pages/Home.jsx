@@ -6,7 +6,7 @@ import { IoTrashBinSharp } from 'react-icons/io5'
 import { HiTrash } from 'react-icons/hi'
 import Text from 'components/typograhy/Text'
 import { motion } from 'framer-motion'
-import { createContact, deleteBulkContacts, deleteContactById, getContact, getContacts, getContactsBySearch, updateContactById } from 'services/contacts.service'
+import { createBulkContact, createContact, deleteBulkContacts, deleteContactById, getContact, getContacts, updateContactById } from 'services/contacts.service'
 import useContextGetter from 'hooks/useContextGetter'
 import dictionary from 'assets/phonebook.svg'
 import male from 'assets/malebanner.svg'
@@ -17,18 +17,23 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import AddContact from 'components/form/AddContact'
 import EditMultipleContact from 'components/form/EditMultipleContact'
+import UploadExcel from 'components/form/UploadExcel'
 
 const Home = () => {
-    const { getAllContacts, getSingleContact } = useContextGetter()
+    const { getAllContacts, getSingleContact, phoneContacts } = useContextGetter()
     const { enqueueSnackbar } = useSnackbar();
     const [contacts, setContacts] = useState([])
     const [contact, setContact] = useState([])
     const [contactIds, setContactIds] = useState('')
+    const [search, setSearch] = useState('')
     const [contactViewed, setContactViewed] = useState(false)
     const [allChecked, setAllChecked] = useState(false)
+    const [singleCheck, setSingleChecked] = useState('')
     const [openModal, setOpenModal] = useState(false)
     const [addContact, setAddContact] = useState(false)
+    const [addBulkContact, setAddBulkContact] = useState(false)
     const [editMulti, setEditMulti] = useState(false)
+    const [file, setFile] = useState('')
     const [multiForm, setMultiForm] = useState([
         {
             firstName: '',
@@ -55,7 +60,6 @@ const Home = () => {
             gender: ''
         },
     ])
-    const [bulkEdit, setBulkEdit] = useState({})
 
     const multiHandleChange = (e) => {
         e.persist()
@@ -108,18 +112,10 @@ const Home = () => {
         setContactIds(idString)
     }, [contacts])
 
-    const searchContacts = async (search) => {
-
-        try {
-            const res = await getContactsBySearch(search)
-
-            getAllContacts(res.data)
-            setContacts(res.data)
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
+    useEffect(()=> {
+        let temp = phoneContacts.filter(e => e.firstName.includes(search) || e.lastName.includes(search))
+        setContacts(temp)
+    }, [search])
 
     const getContactById = async (id) => {
 
@@ -195,8 +191,25 @@ const Home = () => {
         }
     }
 
-    const editMultipleContact = async (values) => {
-        let formData = new FormData();
+    const createBulkContacts = async (e) => {
+        e.preventDefault()
+
+        let data = {
+            file: file
+        }
+
+        try {
+            const res = await createBulkContact(data)
+            if(res.success) {
+                handleSuccess(res.message)
+                setFile('')
+                await fetchContacts()
+                setAddBulkContact(false)
+            }
+        } catch (e) {
+            console.log()
+            handleFail(e?.message) 
+        }
     }
 
     const validationSchema = Yup.object().shape({
@@ -247,7 +260,7 @@ const Home = () => {
                 <SearchContainer>
                     <div className='select_wrap'>
                         <SearchOutlined/>
-                        <input className='search' placeholder='Search address' onChange={(e)=>{searchContacts(e.target.value)}}/>
+                        <input className='search' placeholder='Search address' onChange={(e)=>{setSearch(e.target.value)}}/>
                     </div>
                 </SearchContainer>
             </motion.div>
@@ -272,16 +285,22 @@ const Home = () => {
                         )}
                         
                     </div>
+                    {/* Single */}
                     <button className='add_new' onClick={()=>setAddContact(true)}>
                         <AddCircleRounded sx={{ fontSize: '14px'}}/>
                         Add address
+                    </button>
+                    {/* Bulk address */}
+                    <button className='add_bulk' onClick={()=>setAddBulkContact(true)}>
+                        <AddCircleRounded sx={{ fontSize: '14px'}}/>
+                        Add Bulk address
                     </button>
                 </div>
                 <div className='bottom'>
                     {contacts.length > 0 && contacts.map(contact => (
                         <ContactCardOutlined key={contact._id} index={index++} onClick={()=> {getContactById(contact._id); setContactViewed(true)}}>
                             <div className='checkbox_left'>
-                                <Checkbox sx={{color: '#757AFF', padding: '0', marginTop: '10px'}} checked={allChecked}/>
+                                <Checkbox name={contact._id} sx={{color: '#757AFF', padding: '0', marginTop: '10px'}} checked={singleCheck === contact._id ? true : allChecked} onClick={()=> {setSingleChecked(contact._id)}}/>
                             </div>
                             <div className='contact_right'>
                                 <div className='avatar'>
@@ -339,6 +358,9 @@ const Home = () => {
         </div>
         <CustomModal openModal={openModal} setOpenModal={setOpenModal}>
             <EditContact formik={formik}/>
+        </CustomModal>
+        <CustomModal openModal={addBulkContact} setOpenModal={setAddBulkContact}>
+            <UploadExcel setFile={setFile} handleSubmit={createBulkContacts}/>
         </CustomModal>
         <CustomModal openModal={addContact} setOpenModal={setAddContact}>
             <AddContact formik={contactFormik}/>

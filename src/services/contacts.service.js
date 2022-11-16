@@ -69,13 +69,39 @@ export const createContact = async (data) => {
     }
 }
 
+export const createBulkContact = async (data) => {
+
+    try {
+        const res = await API.post(`/api/contact/bulk`, data,  {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        })
+
+        return res.data
+
+    } catch (e) {
+        throw e
+    }
+}
+
 export const deleteBulkContacts = async (id) => {
-    console.log(id)
     try {
         const res = await API.post(`/api/contact/bulk/delete`, id)
 
         return res.data
         
+    } catch (e) {
+        throw e.response
+    }
+}
+
+export const updateBulkContacts = async (data) => {
+
+    try {
+        const res = await API.patch(`/api/contact/bulk/update`, data)
+
+        return res.data
     } catch (e) {
         throw e.response
     }

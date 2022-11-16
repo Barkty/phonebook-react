@@ -116,6 +116,13 @@ export const MultiFormContainer = styled.div`
             justify-content: space-between;
             flex-wrap: wrap;
         }
+
+        .form_group.form_group_entry {
+            display: flex;
+        }
+        .form_group.form_group_none {
+            display: none;
+        }
     }
 
 
