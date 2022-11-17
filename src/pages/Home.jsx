@@ -113,7 +113,7 @@ const Home = () => {
     }, [contacts])
 
     useEffect(()=> {
-        let temp = phoneContacts.filter(e => e.firstName.includes(search) || e.lastName.includes(search))
+        let temp = phoneContacts?.filter(e => e?.firstName?.includes(search) || e?.lastName?.includes(search))
         setContacts(temp)
     }, [search])
 
@@ -297,10 +297,10 @@ const Home = () => {
                     </button>
                 </div>
                 <div className='bottom'>
-                    {contacts.length > 0 && contacts.map(contact => (
-                        <ContactCardOutlined key={contact._id} index={index++} onClick={()=> {getContactById(contact._id); setContactViewed(true)}}>
+                    {contacts?.length > 0 && contacts?.map(contact => (
+                        <ContactCardOutlined key={contact?._id} index={index++} onClick={()=> {getContactById(contact?._id); setContactViewed(true)}}>
                             <div className='checkbox_left'>
-                                <Checkbox name={contact._id} sx={{color: '#757AFF', padding: '0', marginTop: '10px'}} checked={singleCheck === contact._id ? true : allChecked} onClick={()=> {setSingleChecked(contact._id)}}/>
+                                <Checkbox name={contact?._id} sx={{color: '#757AFF', padding: '0', marginTop: '10px'}} checked={singleCheck === contact?._id ? true : allChecked} onClick={()=> {setSingleChecked(contact._id)}}/>
                             </div>
                             <div className='contact_right'>
                                 <div className='avatar'>
