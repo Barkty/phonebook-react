@@ -87,7 +87,7 @@ export const createBulkContact = async (data) => {
 
 export const deleteBulkContactsById = async (id) => {
     try {
-        const res = await API.post(`/api/contact/bulk/delete`, id)
+        const res = await API.post(`/api/contact/bulk/delete/id`, id)
 
         return res.data
         

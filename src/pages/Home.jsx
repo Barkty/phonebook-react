@@ -6,7 +6,7 @@ import { IoTrashBinSharp } from 'react-icons/io5'
 import { HiChevronDown, HiTrash } from 'react-icons/hi'
 import Text from 'components/typograhy/Text'
 import { motion } from 'framer-motion'
-import { createBulkContact, createContact, deleteBulkContacts, deleteContactById, getContact, getContacts, updateContactById } from 'services/contacts.service'
+import { createContact, deleteBulkContacts, deleteBulkContactsById, deleteContactById, getContact, getContacts, updateContactById } from 'services/contacts.service'
 import useContextGetter from 'hooks/useContextGetter'
 import dictionary from 'assets/phonebook.svg'
 import excel from 'assets/excel.svg'
@@ -17,8 +17,11 @@ import EditContact from 'components/form/EditContact'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import AddContact from 'components/form/AddContact'
-import EditMultipleContact from 'components/form/EditMultipleContact'
+// import EditMultipleContact from 'components/form/EditMultipleContact'
 import UploadExcel from 'components/form/UploadExcel'
+import UploadDelete from 'components/form/UploadDelete'
+import ConfirmDelete from 'components/form/ConfirmDelete'
+import UploadEdit from 'components/form/UploadEdit'
 
 const Home = () => {
     const { getAllContacts, getSingleContact, phoneContacts } = useContextGetter()
@@ -33,40 +36,10 @@ const Home = () => {
     const [openModal, setOpenModal] = useState(false)
     const [addContact, setAddContact] = useState(false)
     const [addBulkContact, setAddBulkContact] = useState(false)
+    const [deleteBulk, setDeleteBulk] = useState(false)
+    const [deleteMethod, setDeleteMethod] = useState(false)
     const [editMulti, setEditMulti] = useState(false)
     const [drop, setDrop] = useState(false)
-    const [file, setFile] = useState('')
-    const [multiForm, setMultiForm] = useState([
-        {
-            firstName: '',
-            lastName: '',
-            phone: '',
-            gender: ''
-        },
-        {
-            firstName: '',
-            lastName: '',
-            phone: '',
-            gender: ''
-        },
-        {
-            firstName: '',
-            lastName: '',
-            phone: '',
-            gender: ''
-        },
-        {
-            firstName: '',
-            lastName: '',
-            phone: '',
-            gender: ''
-        },
-    ])
-
-    const multiHandleChange = (e) => {
-        e.persist()
-        setMultiForm({[e.target.name]: e.target.value})
-    }
 
     const handleSuccess = (message) => {
         enqueueSnackbar(message, {
@@ -151,7 +124,7 @@ const Home = () => {
         let data = { ids: ids };
 
         try {
-            const res = await deleteBulkContacts(data)
+            const res = await deleteBulkContactsById(data)
             if(res.success) {
                 handleSuccess(res.message)
                 await fetchContacts()
@@ -189,27 +162,6 @@ const Home = () => {
             }
 
         } catch (e) {
-            handleFail(e?.message) 
-        }
-    }
-
-    const createBulkContacts = async (e) => {
-        e.preventDefault()
-
-        let data = {
-            file: file
-        }
-
-        try {
-            const res = await createBulkContact(data)
-            if(res.success) {
-                handleSuccess(res.message)
-                setFile('')
-                await fetchContacts()
-                setAddBulkContact(false)
-            }
-        } catch (e) {
-            console.log()
             handleFail(e?.message) 
         }
     }
@@ -281,17 +233,12 @@ const Home = () => {
                         <Checkbox sx={{color: '#757AFF', padding: '0', marginRight: '10px'}} onClick={()=>setAllChecked(!allChecked)}/>
                         {allChecked && (
                             <>
-                                <IoTrashBinSharp color='#757AFF' size={24} style={{marginRight: '10px', cursor: 'pointer' }} onClick={()=>deleteMultiple(contactIds)}/>
+                                <IoTrashBinSharp color='#757AFF' size={24} style={{marginRight: '10px', cursor: 'pointer' }} onClick={()=>setDeleteMethod(true)}/>
                                 <Edit sx={{ fontSize: 24, color: '#757AFF', cursor: 'pointer'}} onClick={()=>setEditMulti(true)}/>
                             </>
                         )}
                         
                     </div>
-                    {/* Single */}
-                    {/* <button className='add_new' onClick={()=>setAddContact(true)}>
-                        <AddCircleRounded sx={{ fontSize: '14px'}}/>
-                        Add address
-                    </button> */}
                     {/* Bulk address */}
                     <div className='dropdown_wrap'>
                         <div className='dropdown' onClick={()=>setDrop(!drop)}>
@@ -308,10 +255,6 @@ const Home = () => {
                             </button>
                         </div>
                     </div>
-                    {/* <button className='add_bulk' onClick={()=>setAddBulkContact(true)}>
-                        <AddCircleRounded sx={{ fontSize: '14px'}}/>
-                        Add Bulk address
-                    </button> */}
                 </div>
                 <div className='bottom'>
                     {contacts?.length > 0 && contacts?.map(contact => (
@@ -376,15 +319,21 @@ const Home = () => {
         <CustomModal openModal={openModal} setOpenModal={setOpenModal}>
             <EditContact formik={formik}/>
         </CustomModal>
-        <CustomModal openModal={addBulkContact} setOpenModal={setAddBulkContact}>
-            <UploadExcel setFile={setFile} handleSubmit={createBulkContacts}/>
-        </CustomModal>
         <CustomModal openModal={addContact} setOpenModal={setAddContact}>
             <AddContact formik={contactFormik}/>
         </CustomModal>
-        {/* <CustomModal openModal={editMulti} setOpenModal={setEditMulti}>
-            <EditMultipleContact formik={multiForm} handleChange={multiHandleChange}/>
-        </CustomModal> */}
+        <CustomModal openModal={addBulkContact} setOpenModal={setAddBulkContact}>
+            <UploadExcel fetchContacts={fetchContacts}/>
+        </CustomModal>
+        <CustomModal openModal={deleteBulk} setOpenModal={setDeleteBulk}>
+            <UploadDelete fetchContacts={fetchContacts}/>
+        </CustomModal>
+        <CustomModal openModal={editMulti} setOpenModal={setEditMulti}>
+            <UploadEdit fetchContacts={fetchContacts}/>
+        </CustomModal>
+        <CustomModal openModal={deleteMethod} setOpenModal={setDeleteMethod}>
+            <ConfirmDelete deleteMultiple={deleteMultiple} contactIds={contactIds} setDeleteBulk={setDeleteBulk} setDeleteMethod={setDeleteMethod}/>
+        </CustomModal>
     </Container>
   )
 }

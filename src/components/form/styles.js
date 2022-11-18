@@ -315,7 +315,7 @@ export const ConfirmContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 
     .confirm_text {
         font-style: normal;
@@ -343,5 +343,44 @@ export const ConfirmContainer = styled.div`
         color: #FFFFFF;
         position: relative;
         left: -92px;
+    }
+
+    .confirm_flex {
+        width: 193px;
+        height: 44px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .delete_all {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 21px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    .delete_upload {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px 10px 10px;
+        gap: 10px;
+        width: 109px;
+        height: 44px;
+        background: #D9D9D9;
+        border: 1px solid #171725;
+        border-radius: 5px;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 21px;
+        color: #383858;
+        cursor: pointer;
     }
 `

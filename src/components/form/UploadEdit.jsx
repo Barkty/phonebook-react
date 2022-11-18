@@ -2,10 +2,10 @@ import React, { useRef } from 'react'
 import useFileUpload from 'react-use-file-upload';
 import { CloudUploadRounded } from '@mui/icons-material'
 import { ConfirmContainer } from './styles'
-import { createBulkContact } from 'services/contacts.service';
+import { updateBulkContacts } from 'services/contacts.service';
 import { useSnackbar } from 'notistack';
 
-const UploadExcel = ({ fetchContacts }) => {
+const UploadEdit = ({ fetchContacts }) => {
     const { enqueueSnackbar } = useSnackbar();
     
     const handleSuccess = (message) => {
@@ -52,7 +52,7 @@ const UploadExcel = ({ fetchContacts }) => {
 
         try {
 
-            const res = await createBulkContact(data)
+            const res = await updateBulkContacts(data)
 
             if(res.success) {
                 handleSuccess(res.message)
@@ -61,13 +61,13 @@ const UploadExcel = ({ fetchContacts }) => {
 
         } catch (e) {
             console.log(e)
-            handleFail(e?.data?.message)  
+            handleFail(e?.data?.message) 
         }
     }
 
   return (
     <ConfirmContainer>
-        <p className='confirm_text'>Upload excel file to create new addresses</p>
+        <p className='confirm_text'>Upload excel file to update addresses</p>
         <div 
             onDragEnter={handleDragDropEvent}
             onDragOver={handleDragDropEvent}
@@ -96,4 +96,4 @@ const UploadExcel = ({ fetchContacts }) => {
   )
 }
 
-export default UploadExcel
+export default UploadEdit
