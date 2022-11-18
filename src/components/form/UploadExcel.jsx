@@ -1,34 +1,76 @@
-import React from 'react'
-import { Avatar } from '@mui/material'
-import { AddCircleRounded } from '@mui/icons-material'
-import { CSpinner } from '@coreui/react'
-import { ButtonFilled, ErrorMessage, FormContainer, FormControl } from './styles'
+import React, { useRef } from 'react'
+import useFileUpload from 'react-use-file-upload';
+import { CloudUploadRounded } from '@mui/icons-material'
+import { ConfirmContainer } from './styles'
+import { createBulkContact } from 'services/contacts.service';
 
-const UploadExcel = ({ setFile, handleSubmit, fileError, isSubmitting}) => {
+const UploadExcel = () => {
 
-    const handleChange = (e) => {
-        const { files } = e.target;
-        setFile(files[0])
+    const {
+        files,
+        fileNames,
+        // fileTypes,
+        // totalSize,
+        // totalSizeInBytes,
+        handleDragDropEvent,
+        // clearAllFiles,
+        createFormData,
+        setFiles,
+        // removeFile,
+    } = useFileUpload();
+
+    const inputRef = useRef()
+
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
+        console.log(files)
+
+        let data = {
+            file: files[0]
+        }
+        console.log(data)
+
+        try {
+
+            const res = await createBulkContact(data)
+
+            console.log(res)
+
+        } catch (e) {
+            console.log(e)
+        }
     }
 
   return (
-    <FormContainer>
-        <div className='add_banner'>
-            <Avatar sx={{width: '92px', height: '92px', marginBottom: '30px', position: 'relative', top: '-25px'}}/>
+    <ConfirmContainer>
+        <p className='confirm_text'>Upload CSV file to create new addresses</p>
+        <div 
+            onDragEnter={handleDragDropEvent}
+            onDragOver={handleDragDropEvent}
+            onDrop={(e) => {
+                handleDragDropEvent(e);
+                setFiles(e, 'a');
+            }}
+        >
+            <CloudUploadRounded 
+                sx={{fontSize: '96px', color: '#757AFF', cursor: 'pointer'}} 
+                onClick={() => inputRef.current.click()}/>
+            <input
+                ref={inputRef}
+                type="file"
+                name='file'
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                    setFiles(e, 'a');
+                    inputRef.current.value = null;
+                }}
+            />
+            <span className='span'>{fileNames[0]}</span>
+            <button type='button' className='upload_button' onClick={handleSubmit}>Upload File</button>
         </div>
-        <form className='form_container' onSubmit={handleSubmit} encType='multipart/form-data'>
-            <FormControl>
-                <label htmlFor='firstName'>Upload Excel:</label>
-                <div className='input'>
-                    <input type='file' accept=".xlsx" name='file' placeholder='First Name' onChange={handleChange}/>
-                </div>
-                {(fileError) && (<ErrorMessage>{fileError}</ErrorMessage>)}
-            </FormControl>
-            <ButtonFilled type='submit' disabled={isSubmitting}>
-                {!isSubmitting ? (<><AddCircleRounded sx={{ fontSize: '24px'}}/> Upload File</>) : (<CSpinner size="sm" component="span"/>)}
-            </ButtonFilled>
-        </form>
-    </FormContainer>
+    </ConfirmContainer>
   )
 }
 

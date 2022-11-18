@@ -181,7 +181,7 @@ export const AddressCard = styled.div`
             align-items: center;
             padding: 3px 10px;
             gap: 10px;
-            width: 178px;
+            width: 100%;
             height: 29px;
             background: #757AFF;
             border-radius: 5px;
@@ -195,6 +195,40 @@ export const AddressCard = styled.div`
             letter-spacing: 0.01em;
             color: #111221;
             white-space: nowrap;
+
+            img {
+                width: 14px;
+                height: 14px;
+                object-fit: contain;
+            }
+        }
+
+        .dropdown_wrap {
+
+            width: 166px;
+            height: auto;
+
+            .dropdown {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 3px 10px;
+                gap: 10px;
+    
+                width: 166px;
+                height: 29px;
+                background: #757AFF;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .dropdown_child {
+                width: 170px;
+                height: 60px;
+                display: ${(props) => (props.display ? props.display : 'none')};
+
+            }
         }
     }
 

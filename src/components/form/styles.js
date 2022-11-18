@@ -306,3 +306,42 @@ export const ErrorMessage = styled.span`
     left: -55px;
     text-align: left;
 `
+
+export const ConfirmContainer = styled.div`
+    width: 680px;
+    height: 195px;
+    background: #222235;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .confirm_text {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 21px;
+        color: #FFFFFF;
+    }
+
+    .upload_button {
+        font-style: normal;
+        font-weight: 275;
+        font-size: 14px;
+        line-height: 21px;
+        /* identical to box height */
+        color: #FFFFFF;
+        cursor: pointer;
+        background-color: inherit;
+        border: none;
+        outline: none;
+        margin-left: -80px;
+    }
+
+    .span {
+        color: #FFFFFF;
+        position: relative;
+        left: -92px;
+    }
+`

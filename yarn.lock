@@ -8095,6 +8095,11 @@ react-transition-group@^4.3.0, react-transition-group@^4.4.2, react-transition-g
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-file-upload@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/react-use-file-upload/-/react-use-file-upload-0.9.5.tgz#0f2b731e54394f10bf3d4c79494564abdc5434ba"
+  integrity sha512-hNH/s7+TxAQ5Do91mvgemY4dIS7xVL3gK09Tst9+h1wZPIIdn8E1h7FiBh9QzBbNl2s6LN1v+tzxCoZf01GafA==
+
 react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"

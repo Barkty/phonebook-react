@@ -3,12 +3,13 @@ import { AddCircleRounded, Edit, SearchOutlined } from '@mui/icons-material'
 import { Checkbox, Icon, Stack, Skeleton } from '@mui/material'
 import { AddressCard, ContactCard, ContactCardOutlined, Container, SearchContainer } from 'components/styles/styles'
 import { IoTrashBinSharp } from 'react-icons/io5'
-import { HiTrash } from 'react-icons/hi'
+import { HiChevronDown, HiTrash } from 'react-icons/hi'
 import Text from 'components/typograhy/Text'
 import { motion } from 'framer-motion'
 import { createBulkContact, createContact, deleteBulkContacts, deleteContactById, getContact, getContacts, updateContactById } from 'services/contacts.service'
 import useContextGetter from 'hooks/useContextGetter'
 import dictionary from 'assets/phonebook.svg'
+import excel from 'assets/excel.svg'
 import male from 'assets/malebanner.svg'
 import { useSnackbar } from "notistack";
 import CustomModal from 'components/modal/CustomModal'
@@ -33,6 +34,7 @@ const Home = () => {
     const [addContact, setAddContact] = useState(false)
     const [addBulkContact, setAddBulkContact] = useState(false)
     const [editMulti, setEditMulti] = useState(false)
+    const [drop, setDrop] = useState(false)
     const [file, setFile] = useState('')
     const [multiForm, setMultiForm] = useState([
         {
@@ -273,7 +275,7 @@ const Home = () => {
                 ease: [0, 0.71, 0.2, 1.01]
             }}
           >
-            <AddressCard>
+            <AddressCard display={drop ? 'block' : ''}>
                 <div className='top'>
                     <div className='checkbox_wrap'>
                         <Checkbox sx={{color: '#757AFF', padding: '0', marginRight: '10px'}} onClick={()=>setAllChecked(!allChecked)}/>
@@ -286,15 +288,30 @@ const Home = () => {
                         
                     </div>
                     {/* Single */}
-                    <button className='add_new' onClick={()=>setAddContact(true)}>
+                    {/* <button className='add_new' onClick={()=>setAddContact(true)}>
                         <AddCircleRounded sx={{ fontSize: '14px'}}/>
                         Add address
-                    </button>
+                    </button> */}
                     {/* Bulk address */}
-                    <button className='add_bulk' onClick={()=>setAddBulkContact(true)}>
+                    <div className='dropdown_wrap'>
+                        <div className='dropdown' onClick={()=>setDrop(!drop)}>
+                            <span>Add address</span> <HiChevronDown/>
+                        </div>
+                        <div className='dropdown_child'>
+                            <button type='button' className='add_bulk' onClick={()=>setAddContact(true)}>
+                                <AddCircleRounded sx={{ fontSize: '14px'}}/>
+                                Single address
+                            </button>
+                            <button type='button' className='add_bulk' onClick={()=>setAddBulkContact(true)}>
+                                <img src={excel} alt='Excel' />
+                                Upload address
+                            </button>
+                        </div>
+                    </div>
+                    {/* <button className='add_bulk' onClick={()=>setAddBulkContact(true)}>
                         <AddCircleRounded sx={{ fontSize: '14px'}}/>
                         Add Bulk address
-                    </button>
+                    </button> */}
                 </div>
                 <div className='bottom'>
                     {contacts?.length > 0 && contacts?.map(contact => (
@@ -365,9 +382,9 @@ const Home = () => {
         <CustomModal openModal={addContact} setOpenModal={setAddContact}>
             <AddContact formik={contactFormik}/>
         </CustomModal>
-        <CustomModal openModal={editMulti} setOpenModal={setEditMulti}>
+        {/* <CustomModal openModal={editMulti} setOpenModal={setEditMulti}>
             <EditMultipleContact formik={multiForm} handleChange={multiHandleChange}/>
-        </CustomModal>
+        </CustomModal> */}
     </Container>
   )
 }
