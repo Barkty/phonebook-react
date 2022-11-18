@@ -242,6 +242,15 @@ export const AddressCard = styled.div`
         justify-content: space-between;
         overflow-y: scroll;
         overflow-x: hidden;
+
+        .skeleton_border {
+            width: 129px;
+            height: 163px;
+            border: 1px solid #313358;
+            border-radius: 20px;
+
+            
+        }
     }
 
     .bottom::-webkit-scrollbar {

@@ -257,6 +257,52 @@ const Home = () => {
                     </div>
                 </div>
                 <div className='bottom'>
+                    {contacts?.length === 0 && (
+                        <>
+                            <div className='skeleton_border'>
+                                <Stack spacing={2} width='129px' height='163px'>
+                                    <Skeleton variant="circular" width={59} height={59} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                </Stack>
+                            </div>
+                            <div className='skeleton_border'>
+                                <Stack spacing={2} width='129px' height='163px'>
+                                    <Skeleton variant="circular" width={59} height={59} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                </Stack>
+                            </div>
+                            <div className='skeleton_border'>
+                                <Stack spacing={2} width='129px' height='163px'>
+                                    <Skeleton variant="circular" width={59} height={59} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                </Stack>
+                            </div>
+                            <div className='skeleton_border'>
+                                <Stack spacing={2} width='129px' height='163px'>
+                                    <Skeleton variant="circular" width={59} height={59} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                </Stack>
+                            </div>
+                            <div className='skeleton_border'>
+                                <Stack spacing={2} width='129px' height='163px'>
+                                    <Skeleton variant="circular" width={59} height={59} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                </Stack>
+                            </div>
+                            <div className='skeleton_border'>
+                                <Stack spacing={2} width='129px' height='163px'>
+                                    <Skeleton variant="circular" width={59} height={59} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                </Stack>
+                            </div>
+                        </>
+                    )}
                     {contacts?.length > 0 && contacts?.map(contact => (
                         <ContactCardOutlined key={contact?._id} index={index++} onClick={()=> {getContactById(contact?._id); setContactViewed(true)}}>
                             <div className='checkbox_left'>
