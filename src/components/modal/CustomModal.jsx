@@ -8,8 +8,8 @@ const CustomModal = ({ children, openModal, setOpenModal }) => {
       <div className={openModal ? `${styles.block}` : `${styles.none_block}`}>
         <ModalOverlay/>
         <Modal>
-          <ChevronLeft className='modal_inside' onClick={() => setOpenModal(false)}/>
-          <ModalContent>{children}</ModalContent>
+          <ChevronLeft data-testid="modal_back" className='modal_inside' onClick={() => setOpenModal(false)}/>
+          <ModalContent data-testid="modal_content">{children}</ModalContent>
         </Modal>
       </div>
     );

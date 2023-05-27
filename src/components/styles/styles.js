@@ -248,7 +248,11 @@ export const AddressCard = styled.div`
             height: 163px;
             border: 1px solid #313358;
             border-radius: 20px;
-
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 1.5%;
             
         }
     }

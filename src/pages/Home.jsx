@@ -6,7 +6,7 @@ import { IoTrashBinSharp } from 'react-icons/io5'
 import { HiChevronDown, HiTrash } from 'react-icons/hi'
 import Text from 'components/typograhy/Text'
 import { motion } from 'framer-motion'
-import { createContact, deleteBulkContacts, deleteBulkContactsById, deleteContactById, getContact, getContacts, updateContactById } from 'services/contacts.service'
+import { createContact, deleteBulkContactsById, deleteContactById, getContact, getContacts, updateContactById } from 'services/contacts.service'
 import useContextGetter from 'hooks/useContextGetter'
 import dictionary from 'assets/phonebook.svg'
 import excel from 'assets/excel.svg'
@@ -90,7 +90,7 @@ const Home = () => {
     useEffect(()=> {
         let temp = phoneContacts?.filter(e => e?.firstName?.includes(search) || e?.lastName?.includes(search))
         setContacts(temp)
-    }, [search])
+    }, [search, phoneContacts])
 
     const getContactById = async (id) => {
 
@@ -260,45 +260,45 @@ const Home = () => {
                     {contacts?.length === 0 && (
                         <>
                             <div className='skeleton_border'>
-                                <Stack spacing={2} width='129px' height='163px'>
-                                    <Skeleton variant="circular" width={59} height={59} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                <Stack spacing={2} width='100%' height='163px' >
+                                    <Skeleton variant="circular" width={59} height={59} sx={{backgroundColor: 'grey', marginLeft: '20%'}}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey' }}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey'}}/>
                                 </Stack>
                             </div>
                             <div className='skeleton_border'>
-                                <Stack spacing={2} width='129px' height='163px'>
-                                    <Skeleton variant="circular" width={59} height={59} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                <Stack spacing={2} width='100%' height='163px' >
+                                    <Skeleton variant="circular" width={59} height={59} sx={{backgroundColor: 'grey', marginLeft: '20%'}}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey' }}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey'}}/>
                                 </Stack>
                             </div>
                             <div className='skeleton_border'>
-                                <Stack spacing={2} width='129px' height='163px'>
-                                    <Skeleton variant="circular" width={59} height={59} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                <Stack spacing={2} width='100%' height='163px' >
+                                    <Skeleton variant="circular" width={59} height={59} sx={{backgroundColor: 'grey', marginLeft: '20%'}}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey' }}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey'}}/>
                                 </Stack>
                             </div>
                             <div className='skeleton_border'>
-                                <Stack spacing={2} width='129px' height='163px'>
-                                    <Skeleton variant="circular" width={59} height={59} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                <Stack spacing={2} width='100%' height='163px' >
+                                    <Skeleton variant="circular" width={59} height={59} sx={{backgroundColor: 'grey', marginLeft: '20%'}}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey' }}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey'}}/>
                                 </Stack>
                             </div>
                             <div className='skeleton_border'>
-                                <Stack spacing={2} width='129px' height='163px'>
-                                    <Skeleton variant="circular" width={59} height={59} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                <Stack spacing={2} width='100%' height='163px' >
+                                    <Skeleton variant="circular" width={59} height={59} sx={{backgroundColor: 'grey', marginLeft: '20%'}}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey' }}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey'}}/>
                                 </Stack>
                             </div>
                             <div className='skeleton_border'>
-                                <Stack spacing={2} width='129px' height='163px'>
-                                    <Skeleton variant="circular" width={59} height={59} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                                <Stack spacing={2} width='100%' height='163px' >
+                                    <Skeleton variant="circular" width={59} height={59} sx={{backgroundColor: 'grey', marginLeft: '20%'}}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey' }}/>
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'grey'}}/>
                                 </Stack>
                             </div>
                         </>
@@ -385,3 +385,16 @@ const Home = () => {
 }
 
 export default Home
+
+export const FormikTest = () => {
+    const contactFormik = useFormik({
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            gender: ''
+        },
+        enableReinitialize: true,
+    })
+    return contactFormik
+}

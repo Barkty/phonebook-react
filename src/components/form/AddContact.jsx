@@ -12,14 +12,22 @@ const AddContact = ({ formik }) => {
     { value: 'Others', label: 'Others' }
   ]
 
-  const {handleBlur, handleChange, handleSubmit, isSubmitting, resetForm, values: { firstName, lastName, gender, phone }, errors: { firstName: firstNameError, lastName: lastNameError, gender: genderError, phone: phoneError }, touched: { firstName: firstNameTouched, lastName: lastNameTouched, gender: genderTouched, phone: phoneTouched }} = formik
+  const { 
+    handleBlur,
+    handleChange, 
+    handleSubmit, 
+    isSubmitting, 
+    values: { firstName, lastName, gender, phone }, 
+    errors: { firstName: firstNameError, lastName: lastNameError, gender: genderError, phone: phoneError }, 
+    touched: { firstName: firstNameTouched, lastName: lastNameTouched, gender: genderTouched, phone: phoneTouched }
+  } = formik
   
   return (
     <FormContainer>
       <div className='add_banner'>
         <Avatar sx={{width: '92px', height: '92px', marginBottom: '30px', position: 'relative', top: '-25px'}}/>
       </div>
-      <form className='form_container' onSubmit={handleSubmit}>
+      <form data-testid="form" className='form_container'>
         <FormControl>
           <label htmlFor='firstName'>First Name:</label>
           <div className='input'>
@@ -48,7 +56,7 @@ const AddContact = ({ formik }) => {
               value={gender} onChange={handleChange} onBlur={handleBlur}
               name='gender'>
                   {options.map((option, index) => (
-                    <Option  value={option.value} key={index}>{option.label}</Option>
+                    <Option value={option.value} key={index}>{option.label}</Option>
                   ))}
             </select>
           </div>
