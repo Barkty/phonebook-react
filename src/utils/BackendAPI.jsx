@@ -1,14 +1,16 @@
 import axios from 'axios'
+import { environment } from 'config/environment';
 
-// const baseURL = 'http://localhost:8009'
-const baseURL = 'https://phone-book-server.onrender.com'
+const { api: { uri } } = environment
+// const baseURL = 'https://phone-book-server.onrender.com'
+console.log('URI:: ', uri)
 
 const API = axios.create({
-    baseURL,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "*/*",
-    },
+  baseURL: uri,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "*/*",
+  },
 });
 
 API.interceptors.request.use((request) => {

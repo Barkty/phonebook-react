@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { AddCircleRounded, Edit, SearchOutlined } from '@mui/icons-material'
-import { Checkbox, Icon, Stack, Skeleton } from '@mui/material'
+import { Checkbox, Icon, Stack, Skeleton, Pagination } from '@mui/material'
 import { AddressCard, ContactCard, ContactCardOutlined, Container, SearchContainer } from 'components/styles/styles'
 import { IoTrashBinSharp } from 'react-icons/io5'
 import { HiChevronDown, HiTrash } from 'react-icons/hi'
@@ -24,12 +24,11 @@ import ConfirmDelete from 'components/form/ConfirmDelete'
 import UploadEdit from 'components/form/UploadEdit'
 
 const Home = () => {
-    const { getAllContacts, getSingleContact, phoneContacts } = useContextGetter()
     const { enqueueSnackbar } = useSnackbar();
     const [contacts, setContacts] = useState([])
     const [contact, setContact] = useState([])
     const [contactIds, setContactIds] = useState('')
-    const [search, setSearch] = useState('')
+    const [query, setSearch] = useState({ page: 1, limit: 10, search: ''})
     const [contactViewed, setContactViewed] = useState(false)
     const [allChecked, setAllChecked] = useState(false)
     const [singleCheck, setSingleChecked] = useState('')
@@ -40,6 +39,7 @@ const Home = () => {
     const [deleteMethod, setDeleteMethod] = useState(false)
     const [editMulti, setEditMulti] = useState(false)
     const [drop, setDrop] = useState(false)
+    const { page, limit, search} = query
 
     const handleSuccess = (message) => {
         enqueueSnackbar(message, {
@@ -61,21 +61,22 @@ const Home = () => {
         });
     };
 
-    const fetchContacts = async () => {
+    const fetchContacts = async (page, limit, search) => {
         try {
-            const res = await getContacts()
+            const res = await getContacts(page, limit, search)
 
-            getAllContacts(res.data)
-            setContacts(res.data)
+            console.log(res)
+            // getAllContacts(res.data)
+            setContacts(res)
         } catch (error) {
             console.log(error)
         }
     }
     useEffect(()=> {
         (async function() {
-            await fetchContacts()
+            await fetchContacts(page, limit, search)
         })()
-    }, [])
+    }, [page, search])
 
     useEffect(() => {
         let ids = []
@@ -87,18 +88,17 @@ const Home = () => {
         setContactIds(idString)
     }, [contacts])
 
-    useEffect(()=> {
-        let temp = phoneContacts?.filter(e => e?.firstName?.includes(search) || e?.lastName?.includes(search))
-        setContacts(temp)
-    }, [search, phoneContacts])
+    // useEffect(()=> {
+    //     let temp = contacts?.docs.filter(e => e?.firstName?.includes(search) || e?.lastName?.includes(search))
+    //     setContacts(temp)
+    // }, [search, contacts?.docs])
 
     const getContactById = async (id) => {
 
         try {
             const res = await getContact(id)
 
-            console.log(res)
-            getSingleContact(res.data)
+            // getSingleContact(res.data)
             setContact(res.data)
         } catch (e) {
             console.log(e)
@@ -112,7 +112,7 @@ const Home = () => {
 
             if(res.success) {
                 handleSuccess(res.message)
-                await fetchContacts()
+                await fetchContacts(page, limit, search)
             }
             console.log(res)
         } catch (e) {
@@ -127,7 +127,7 @@ const Home = () => {
             const res = await deleteBulkContactsById(data)
             if(res.success) {
                 handleSuccess(res.message)
-                await fetchContacts()
+                await fetchContacts(page, limit, search)
             }
 
         } catch (e) {
@@ -142,7 +142,7 @@ const Home = () => {
 
             if(res.success) {
                 handleSuccess(res.message)
-                await fetchContacts()
+                await fetchContacts(page, limit, search)
             }
 
         } catch (e) {
@@ -157,7 +157,7 @@ const Home = () => {
 
             if(res.success) {
                 handleSuccess(res.message)
-                await fetchContacts()
+                await fetchContacts(page, limit, search)
                 setAddContact(false)
             }
 
@@ -214,7 +214,7 @@ const Home = () => {
                 <SearchContainer>
                     <div className='select_wrap'>
                         <SearchOutlined/>
-                        <input className='search' placeholder='Search address' onChange={(e)=>{setSearch(e.target.value)}}/>
+                        <input className='search' placeholder='Search address' onChange={(e)=>{setSearch({ ...query, search: e.target.value })}}/>
                     </div>
                 </SearchContainer>
             </motion.div>
@@ -257,7 +257,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className='bottom'>
-                    {contacts?.length === 0 && (
+                    {contacts?.docs?.length === 0 && (
                         <>
                             <div className='skeleton_border'>
                                 <Stack spacing={2} width='100%' height='163px' >
@@ -303,7 +303,7 @@ const Home = () => {
                             </div>
                         </>
                     )}
-                    {contacts?.length > 0 && contacts?.map(contact => (
+                    {contacts?.docs?.length > 0 && contacts?.map(contact => (
                         <ContactCardOutlined key={contact?._id} index={index++} onClick={()=> {getContactById(contact?._id); setContactViewed(true)}}>
                             <div className='checkbox_left'>
                                 <Checkbox name={contact?._id} sx={{color: '#757AFF', padding: '0', marginTop: '10px'}} checked={singleCheck === contact?._id ? true : allChecked} onClick={()=> {setSingleChecked(contact._id)}}/>
@@ -320,6 +320,18 @@ const Home = () => {
                         </ContactCardOutlined>
                     ))}
                 </div>
+                {contacts?.docs?.length > 0 && (
+                    <div className="flex justify-end mt-4">
+                        <Pagination
+                            count={contacts?.totalPages}
+                            page={page}
+                            variant="outlined"
+                            shape="rounded"
+                            color="primary"
+                            onChange={(e, value) => setSearch({ ...query, page: value })}
+                        />
+                    </div>
+                )}
             </AddressCard>
           </motion.div>
         </div>

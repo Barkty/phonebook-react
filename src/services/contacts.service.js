@@ -1,11 +1,12 @@
 import API from "utils/BackendAPI";
 
-export const getContacts = async () => {
+export const getContacts = async (page, limit, search) => {
 
     try {
-        const res = await API.get(`/api/contact`)
+        const url = page ? `/contact?page=${page}&limit=${limit}&contact=${search}` : `/contact?page=${page}&limit=${limit}`
+        const res = await API.get(url)
 
-        return res.data
+        return res.data.data
     } catch (e) {
         throw e?.response
     }
@@ -14,9 +15,9 @@ export const getContacts = async () => {
 export const getContactsBySearch = async (contact_name) => {
 
     try {
-        const res = await API.get(`/api/contact?contact=${contact_name}`)
+        const res = await API.get(`/contact?contact=${contact_name}`)
 
-        return res.data
+        return res.data.data
     } catch (e) {
         throw e?.response
     }
@@ -26,9 +27,9 @@ export const getContact = async (id) => {
 
     try {
 
-        const res = await API.get(`/api/contact/${id}`)
+        const res = await API.get(`/contact/${id}`)
 
-        return res.data
+        return res.data.data
 
     } catch (e) {
        throw e?.response
@@ -38,7 +39,7 @@ export const getContact = async (id) => {
 export const deleteContactById = async (id) => {
 
     try {
-        const res = await API.delete(`/api/contact/delete/${id}`)
+        const res = await API.delete(`/contact/delete/${id}`)
 
         return res.data
     } catch (e) {
@@ -49,7 +50,7 @@ export const deleteContactById = async (id) => {
 export const updateContactById = async (id, data) => {
 
     try {
-        const res = await API.patch(`/api/contact/${id}`, data)
+        const res = await API.patch(`/contact/${id}`, data)
 
         return res.data
     } catch (e) {
@@ -60,7 +61,7 @@ export const updateContactById = async (id, data) => {
 export const createContact = async (data) => {
 
     try {
-        const res = await API.post(`/api/contact`, data)
+        const res = await API.post(`/contact`, data)
 
         return res.data
 
@@ -72,7 +73,7 @@ export const createContact = async (data) => {
 export const createBulkContact = async (data) => {
 
     try {
-        const res = await API.post(`/api/contact/bulk`, data,  {
+        const res = await API.post(`/contact/bulk`, data,  {
             headers: {
                 "Content-Type": "multipart/form-data",
             }
@@ -87,7 +88,7 @@ export const createBulkContact = async (data) => {
 
 export const deleteBulkContactsById = async (id) => {
     try {
-        const res = await API.post(`/api/contact/bulk/delete/id`, id)
+        const res = await API.post(`/contact/bulk/delete/id`, id)
 
         return res.data
         
@@ -99,7 +100,7 @@ export const deleteBulkContactsById = async (id) => {
 export const deleteBulkContacts = async (data) => {
 
     try {
-        const res = await API.post(`/api/contact/bulk/delete`, data, {
+        const res = await API.post(`/contact/bulk/delete`, data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             }
@@ -116,7 +117,7 @@ export const updateBulkContacts = async (data) => {
 
     try {
         
-        const res = await API.patch(`/api/contact/bulk/update`, data, {
+        const res = await API.patch(`/contact/bulk/update`, data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             }
